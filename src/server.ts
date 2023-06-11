@@ -31,6 +31,8 @@ app.use(cors(corsOptions));
 initAPIRoute.initAPIProductType(app);
 initAPIRoute.initAPIProduct(app);
 initAPIRoute.initAPIUser(app);
+initAPIRoute.initAPIBill(app);
+initAPIRoute.initAPIProductBill(app);
 
 // Xử lý các tuyến đường không hợp lệ
 app.use((req: Request, res: Response) => {

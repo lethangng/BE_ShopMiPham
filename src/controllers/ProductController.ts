@@ -51,7 +51,7 @@ const getProductById = async (
         data: user,
       });
     }
-    return res.status(500).json({
+    return res.status(401).json({
       errCode: 401,
       message: null,
       errors: "Error: Bad request!",
@@ -124,8 +124,8 @@ const editProduct = async (req: Request, res: Response): Promise<Response> => {
       !price ||
       !productTypeId
     ) {
-      return res.status(404).json({
-        errCode: 404,
+      return res.status(400).json({
+        errCode: 400,
         message: null,
         error: "Error: Bad request!",
       });

@@ -8,6 +8,8 @@ import ProductController from "../controllers/ProductController";
 
 // Config upload file: đường dẫn lưu, tên file
 import multer from "multer";
+import BillController from "../controllers/BillController";
+import ProductBillController from "../controllers/ProductBillController";
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "src/uploads/");
@@ -199,4 +201,64 @@ const initAPIUser = (app: express.Application) => {
   return app.use("/api/v1", routerUser);
 };
 
-export default { initAPIRole, initAPIUser, initAPIProductType, initAPIProduct };
+// Bill routing
+const initAPIBill = (app: express.Application) => {
+  const routerBill = Router();
+  // Get bill chart by year
+  routerBill.get(
+    "/bill/:year?",
+    Authorization.authenticated,
+    Authorization.adminRole,
+    BillController.getBillCharts
+  );
+
+  // Get bill
+  routerBill.get(
+    "/bills/:page?",
+    Authorization.authenticated,
+    Authorization.adminRole,
+    BillController.getBills
+  );
+
+  // Delete bill
+  routerBill.delete(
+    "/bills",
+    Authorization.authenticated,
+    Authorization.adminRole,
+    BillController.deleteBills
+  );
+
+  // Get detail bill by id
+  routerBill.get(
+    "/bill/detail/:id?/:page?",
+    Authorization.authenticated,
+    Authorization.adminRole,
+    BillController.getBillDetailById
+  );
+
+  return app.use("/api/v1", routerBill);
+};
+
+// ProductBill routing
+const initAPIProductBill = (app: express.Application) => {
+  const routerBill = Router();
+
+  // Delete bill
+  routerBill.delete(
+    "/product-bills",
+    Authorization.authenticated,
+    Authorization.adminRole,
+    ProductBillController.deleteProductBills
+  );
+
+  return app.use("/api/v1", routerBill);
+};
+
+export default {
+  initAPIRole,
+  initAPIUser,
+  initAPIProductType,
+  initAPIProduct,
+  initAPIBill,
+  initAPIProductBill,
+};

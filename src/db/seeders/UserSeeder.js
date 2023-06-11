@@ -13,6 +13,7 @@ module.exports = {
             "$2a$12$jRX0GBYAr/XPUAiZYZjnruZ4TT65438891S3g0djTjOEo3wgErdn.", // "admin"
           address: "Thai Binh",
           phone: "0345",
+          avatar: "avatar-default.jpg",
           roleId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -24,6 +25,43 @@ module.exports = {
             "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
           address: "Ha Noi",
           phone: "034567",
+          avatar: "avatar-default.jpg",
+          roleId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "User_2",
+          email: "user_2@gmail.com",
+          password:
+            "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
+          address: "Nam Dinh",
+          phone: "034567",
+          avatar: "avatar-default.jpg",
+          roleId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "User_3",
+          email: "user_3@gmail.com",
+          password:
+            "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
+          address: "Thanh Hoa",
+          phone: "034567",
+          avatar: "avatar-default.jpg",
+          roleId: 2,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: "User_4",
+          email: "user_4@gmail.com",
+          password:
+            "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
+          address: "Hai Phong",
+          phone: "034567",
+          avatar: "avatar-default.jpg",
           roleId: 2,
           createdAt: new Date(),
           updatedAt: new Date(),
