@@ -159,6 +159,9 @@ const initAPIUser = (app: express.Application) => {
   // Check email exsit
   routerUser.post("/user/check-email", UserController.checkEmail);
 
+  // Get avatar by email
+  routerUser.post("/user/info", UserController.getAvatarByEmail);
+
   // Create user
   routerUser.post(
     "/user/create",

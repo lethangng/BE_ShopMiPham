@@ -1,8 +1,10 @@
+import path from "path";
 import { Request, Response } from "express";
 import Helper from "../helpers/Helper";
 import Token from "../services/Token";
 import dotenv from "dotenv";
 import CRUDUserService from "../services/CRUDUserService";
+import User from "../db/models/User";
 dotenv.config();
 
 const register = async (req: Request, res: Response): Promise<Response> => {
@@ -99,9 +101,12 @@ const userLogin = async (req: Request, res: Response): Promise<Response> => {
       phone: user.phone,
       address: user.address,
     };
+
     // console.log(dataUser);
     return res.status(200).json({
       errCode: 0,
+      message: "Login sussess",
+      errors: null,
       user: dataUser,
       token: token,
       refreshToken: refreshToken,
@@ -283,6 +288,43 @@ const checkEmail = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
+const getAvatarByEmail = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    // console.log(req.body);
+    if (!email) {
+      return res.status(400).json({
+        errCode: 400,
+        message: null,
+        error: "Error: Bad request!",
+      });
+    }
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
+      attributes: ["avatar"],
+    });
+    if (user) {
+      const imagesImagePath = path.join(__dirname, "../uploads", user.avatar);
+      // console.log(imagesImagePath);
+      return res.status(200).sendFile(imagesImagePath);
+    }
+    return res.status(400).json({
+      errCode: 400,
+      message: null,
+      errors: "Not find avatar",
+      data: [],
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      errCode: 500,
+      message: null,
+      errors: error.message,
+    });
+  }
+};
+
 export default {
   register,
   userLogin,
@@ -293,4 +335,5 @@ export default {
   deleteUsers,
   checkEmail,
   createUser,
+  getAvatarByEmail,
 };
