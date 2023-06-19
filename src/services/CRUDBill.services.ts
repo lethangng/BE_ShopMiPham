@@ -1,11 +1,20 @@
+// import { Product } from "pages/Admin/Product";
 import Bill from "../db/models/Bill";
 import { Op } from "sequelize";
 import Product_Bill from "../db/models/Product_Bill";
+import Product from "../db/models/Product";
 
-const getBills = async (year: number) => {
+const getBills = async (month: number | null, year: number) => {
   try {
-    const startDate = new Date(year, 0, 1);
-    const endDate = new Date(year, 11, 31);
+    let startDate: Date;
+    let endDate: Date;
+    if (!month) {
+      startDate = new Date(year, 0, 1);
+      endDate = new Date(year, 11, 31);
+    } else {
+      startDate = new Date(year, month, 1);
+      endDate = new Date(year, month, 31);
+    }
 
     const bills = Bill.findAll({
       where: {
@@ -16,6 +25,44 @@ const getBills = async (year: number) => {
       },
     });
     return bills;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+const getProductBills = async (month: number, year: number) => {
+  try {
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month, 31);
+
+    const bills = await Bill.findAll({
+      where: {
+        purchaseDate: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate,
+        },
+      },
+      include: [
+        {
+          model: Product_Bill,
+          include: [
+            {
+              model: Product,
+              // include: [Product],
+            },
+          ],
+        },
+      ],
+    });
+    const productBills: Product[] = [];
+    bills.forEach((bill) => {
+      bill.dataValues.Product_Bills.forEach((productBill: any) => {
+        // console.log(productBill.dataValues.Product.dataValues);
+        productBills.push(productBill.dataValues.Product.dataValues);
+      });
+    });
+    return productBills;
+    // console.log(">>> check:", productBills);
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -99,4 +146,5 @@ export default {
   getListBills,
   deleteBills,
   getBillById,
+  getProductBills,
 };

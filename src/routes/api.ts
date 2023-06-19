@@ -215,6 +215,23 @@ const initAPIBill = (app: express.Application) => {
     BillController.getBillCharts
   );
 
+  // Get bill chart by year
+  routerBill.get(
+    "/bill-revenue",
+    // Authorization.authenticated,
+    // Authorization.adminRole,
+    BillController.getBillRevenueCharts
+  );
+
+  routerBill.get(
+    "/bill/:month?/:year?",
+    Authorization.authenticated,
+    Authorization.adminRole,
+    BillController.getTopProductCharts
+  );
+
+  // Get bill + product chart by month + year
+
   // Get bill
   routerBill.get(
     "/bills/:page?",

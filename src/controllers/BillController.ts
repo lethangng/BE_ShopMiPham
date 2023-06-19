@@ -16,12 +16,74 @@ const getBillCharts = async (
     });
   }
   try {
-    const bills = await CRUDBillServices.getBills(year);
+    // Lấy ra các hóa đơn trong năm
+    const bills = await CRUDBillServices.getBills(null, year);
     const charts = new Array(12).fill(0);
     bills.forEach((bill) => {
       const month = bill.dataValues.purchaseDate.getMonth();
       charts[month]++;
     });
+    // console.log(charts);
+    return res.status(200).json({
+      errCode: 0,
+      message: "OK",
+      errors: null,
+      data: charts,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      errCode: 500,
+      message: null,
+      errors: error.message,
+    });
+  }
+};
+
+const getBillRevenueCharts = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const month = req.query.month ? parseInt(req.query.month as string) : null;
+  const year = req.query.year ? parseInt(req.query.year as string) : null;
+  // console.log(req.params);
+  if (month && month <= 0) {
+    return res.status(400).json({
+      errCode: 400,
+      message: null,
+      error: "Error: Bad request!",
+    });
+  }
+  if (!year || year <= 0) {
+    return res.status(400).json({
+      errCode: 400,
+      message: null,
+      error: "Error: Bad request!",
+    });
+  }
+  try {
+    // Lấy ra các hóa đơn trong năm
+    const bills = await CRUDBillServices.getBills(month, year);
+    const charts: number[] = month
+      ? new Array(4).fill(0)
+      : new Array(12).fill(0);
+    if (!month) {
+      // charts = new Array(12).fill(0);
+      bills.forEach((bill) => {
+        const month = bill.dataValues.purchaseDate.getMonth();
+        charts[month] += bill.dataValues.totalMoney;
+      });
+    } else {
+      // Lặp qua các hóa đơn và phân loại vào từng tuần
+      bills.forEach((bill) => {
+        const purchaseDate = bill.dataValues.purchaseDate;
+
+        // Tính toán tuần tương ứng với ngày mua hàng
+        const weekNumber = Math.floor((purchaseDate.getDate() - 1) / 7);
+
+        // Tính tổng tiền cho tuần đó
+        charts[weekNumber] += bill.dataValues.totalMoney;
+      });
+    }
     // console.log(charts);
     return res.status(200).json({
       errCode: 0,
@@ -161,10 +223,65 @@ const getBillDetailById = async (
   }
 };
 
+const getTopProductCharts = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const month = req.params.month ? parseInt(req.params.month) : null;
+  const year = req.params.year ? parseInt(req.params.year) : null;
+  // console.log(req.params);
+  if (!month || month <= 0 || !year || year <= 0) {
+    return res.status(400).json({
+      errCode: 400,
+      message: null,
+      error: "Error: Bad request!",
+    });
+  }
+  try {
+    // Lấy ra các hóa đơn trong tháng của năm đấy
+    const bills = await CRUDBillServices.getProductBills(month, year);
+    // console.log(">>> check:", bills);
+
+    // Lấy ra sản phẩm và số lượng tương ứng của sản phẩm trong tháng đấy
+    const charts: { productId: number; name: string; count: number }[] = [];
+    bills.forEach((bill) => {
+      // console.log(">>>", bill.productId);
+      const existProductId = charts.find(
+        (chart: any) => chart.productId === bill.id
+      );
+      if (existProductId) {
+        existProductId.count++;
+      } else {
+        charts.push({ productId: bill.id, name: bill.name, count: 1 });
+      }
+    });
+
+    // Sắp xếp mảng charts theo thứ tự giảm dần của count
+    charts.sort((a, b) => b.count - a.count);
+    const top10ProductCharts = charts.slice(0, 10);
+    // console.log(">>> check charts:", top10ProductCharts);
+    return res.status(200).json({
+      errCode: 0,
+      message: "OK",
+      errors: null,
+      data: charts,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.status(500).json({
+      errCode: 500,
+      message: null,
+      errors: error.message,
+    });
+  }
+};
+
 export default {
   getBillCharts,
   getBills,
   deleteBills,
   getBillById,
   getBillDetailById,
+  getTopProductCharts,
+  getBillRevenueCharts,
 };

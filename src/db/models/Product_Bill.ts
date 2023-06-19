@@ -1,5 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import connection from "../../config/connectDB";
+import Bill from "./Bill";
+import Product from "./Product";
 
 class Product_Bill extends Model {
   public id!: number;
@@ -38,5 +40,7 @@ Product_Bill.init(
     tableName: "product_bills",
   }
 );
+
+Product_Bill.belongsTo(Product, { foreignKey: "productId" });
 
 export default Product_Bill;

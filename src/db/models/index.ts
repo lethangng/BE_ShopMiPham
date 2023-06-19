@@ -22,6 +22,9 @@ Product.hasMany(ImageProduct, { foreignKey: "productId" });
 // ProductType
 ProductType.hasMany(Product, { foreignKey: "productTypeId" });
 
+// Bill
+Bill.hasMany(Product_Bill, { foreignKey: "billId" });
+
 // Định nghĩa quan hệ: Một Post thuộc về một User
 // Post.belongsTo(User, { as: "user", foreignKey: "userId" });
 
