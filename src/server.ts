@@ -34,6 +34,10 @@ initAPIRoute.initAPIUser(app);
 initAPIRoute.initAPIBill(app);
 initAPIRoute.initAPIProductBill(app);
 
+app.use("/", (req: Request, res: Response) => {
+  res.send("Server ok!");
+});
+
 // Xử lý các tuyến đường không hợp lệ
 app.use((req: Request, res: Response) => {
   res.status(404).json({ message: "Tuyến đường không tồn tại" });
