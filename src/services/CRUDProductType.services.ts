@@ -19,11 +19,13 @@ const getProductTypes = async (
       if (page < 1) page = 1;
       // Vị trí bắt đầu truy vấn
       const offset = (page - 1) * pageSize;
+      // console.log(">>>", ProductType);
       const productTypes = await ProductType.findAndCountAll({
         where: whereCondition,
         limit: pageSize,
         offset,
       });
+      // console.log(">>>", productTypes);
       return productTypes;
     } else {
       const productTypes = await ProductType.findAndCountAll({
@@ -32,7 +34,7 @@ const getProductTypes = async (
       return productTypes;
     }
   } catch (error: any) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 

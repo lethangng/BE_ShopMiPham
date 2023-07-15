@@ -7,6 +7,11 @@ class Bill extends Model {
   public purchaseDate!: Date;
   public totalMoney!: number;
   public userId!: number;
+  public readonly Product_Bills!: Product_Bill; // Định nghĩa thuộc tính Product_Bills
+
+  // public static associations: {
+  //   Product_Bills: Association<Bill, Product_Bill>;
+  // };
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -36,10 +41,7 @@ Bill.init(
     timestamps: true,
     sequelize: connection.sequelize,
     underscored: false,
-    tableName: "bills",
   }
 );
-
-Bill.hasMany(Product_Bill, { foreignKey: "billId" });
 
 export default Bill;

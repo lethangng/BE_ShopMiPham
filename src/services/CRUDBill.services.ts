@@ -1,8 +1,5 @@
-// import { Product } from "pages/Admin/Product";
-import Bill from "../db/models/Bill";
 import { Op } from "sequelize";
-import Product_Bill from "../db/models/Product_Bill";
-import Product from "../db/models/Product";
+import { Product, Product_Bill, Bill } from "../db/models";
 
 const getBills = async (month: number | null, year: number) => {
   try {
@@ -48,22 +45,22 @@ const getProductBills = async (month: number, year: number) => {
           include: [
             {
               model: Product,
-              // include: [Product],
             },
           ],
         },
       ],
+      raw: true,
+      nest: true,
     });
+    // console.log("bills: ", bills);
     const productBills: Product[] = [];
     bills.forEach((bill) => {
-      bill.dataValues.Product_Bills.forEach((productBill: any) => {
-        // console.log(productBill.dataValues.Product.dataValues);
-        productBills.push(productBill.dataValues.Product.dataValues);
-      });
+      productBills.push(bill.Product_Bills.Product);
     });
-    return productBills;
     // console.log(">>> check:", productBills);
+    return productBills;
   } catch (error: any) {
+    console.log("Error: ", error);
     throw new Error(error.message);
   }
 };
@@ -74,11 +71,12 @@ const getListBills = async (
   pageSize: number
 ) => {
   try {
-    const whereCondition = keyword
+    const whereCondition: any = keyword
       ? {
           // Điều kiện tìm kiếm
+          // Điều kiện tìm kiếm
           userId: {
-            [Op.like]: `%${keyword}%`,
+            [Op.eq]: keyword,
           },
         }
       : {};
@@ -92,6 +90,7 @@ const getListBills = async (
         limit: pageSize,
         offset,
         attributes: ["id", "purchaseDate", "totalMoney", "userId"],
+        // raw: true,
       });
       return bills;
     } else {
@@ -102,6 +101,7 @@ const getListBills = async (
       return bills;
     }
   } catch (error: any) {
+    console.log("Error:", error);
     throw new Error(error.message);
   }
 };

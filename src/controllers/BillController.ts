@@ -20,7 +20,7 @@ const getBillCharts = async (
     const bills = await CRUDBillServices.getBills(null, year);
     const charts = new Array(12).fill(0);
     bills.forEach((bill) => {
-      const month = bill.dataValues.purchaseDate.getMonth();
+      const month = bill.purchaseDate.getMonth();
       charts[month]++;
     });
     // console.log(charts);
@@ -69,19 +69,19 @@ const getBillRevenueCharts = async (
     if (!month) {
       // charts = new Array(12).fill(0);
       bills.forEach((bill) => {
-        const month = bill.dataValues.purchaseDate.getMonth();
-        charts[month] += bill.dataValues.totalMoney;
+        const month = bill.purchaseDate.getMonth();
+        charts[month] += bill.totalMoney;
       });
     } else {
       // Lặp qua các hóa đơn và phân loại vào từng tuần
       bills.forEach((bill) => {
-        const purchaseDate = bill.dataValues.purchaseDate;
+        const purchaseDate = bill.purchaseDate;
 
         // Tính toán tuần tương ứng với ngày mua hàng
         const weekNumber = Math.floor((purchaseDate.getDate() - 1) / 7);
 
         // Tính tổng tiền cho tuần đó
-        charts[weekNumber] += bill.dataValues.totalMoney;
+        charts[weekNumber] += bill.totalMoney;
       });
     }
     // console.log(charts);
@@ -121,6 +121,7 @@ const getBills = async (req: Request, res: Response): Promise<Response> => {
       data: productTypes.rows,
     });
   } catch (error: any) {
+    console.log("Error: ", error);
     return res.status(500).json({
       errCode: 500,
       message: null,
@@ -247,7 +248,7 @@ const getTopProductCharts = async (
     bills.forEach((bill) => {
       // console.log(">>>", bill.productId);
       const existProductId = charts.find(
-        (chart: any) => chart.productId === bill.id
+        (chart: any) => chart.productId == bill.id
       );
       if (existProductId) {
         existProductId.count++;

@@ -1,13 +1,15 @@
 import { DataTypes, Model } from "sequelize";
 import connection from "../../config/connectDB";
-import Bill from "./Bill";
 import Product from "./Product";
+import Bill from "./Bill";
 
 class Product_Bill extends Model {
   public id!: number;
   public billId!: number;
   public productId!: number;
   public quantity!: number;
+
+  public readonly Product!: Product;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -37,10 +39,8 @@ Product_Bill.init(
     timestamps: true,
     sequelize: connection.sequelize,
     underscored: false,
-    tableName: "product_bills",
+    // tableName: "Product_Bills",
   }
 );
-
-Product_Bill.belongsTo(Product, { foreignKey: "productId" });
 
 export default Product_Bill;

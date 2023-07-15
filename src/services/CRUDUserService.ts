@@ -1,4 +1,4 @@
-import User from "../db/models/User";
+import { User } from "../db/models";
 import { Op } from "sequelize";
 import PasswordHelper from "../helpers/PasswordHelper";
 

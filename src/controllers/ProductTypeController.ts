@@ -19,6 +19,7 @@ const getProductTypes = async (
       keyword,
       pageSize
     );
+    // console.log(">>>>");
     return res.status(200).json({
       errCode: 0,
       message: "OK",

@@ -67,6 +67,7 @@ const getProductById = async (
 
 const getImgById = async (req: Request, res: Response) => {
   const { id } = req.params;
+  // console.log(">>> check:", id);
 
   // Đường dẫn tới thư mục chứa các hình ảnh
   const imagesFolderPath = path.join(__dirname, "../uploads");
@@ -86,8 +87,10 @@ const getImgById = async (req: Request, res: Response) => {
   try {
     // Lọc danh sách các tệp theo tiêu chí cụ thể (trong ví dụ này, lọc các tệp JPG và PNG)
     const fileNames = await CRUDProductServices.getFileNameById(id);
+    // console.log(">>> filename:", fileNames);
     const newName = fileNames.map((item) => {
-      return item.dataValues.image;
+      // console.log("item:", item.image);
+      return item.image;
     });
     // console.log(newName);
 
@@ -103,9 +106,9 @@ const getImgById = async (req: Request, res: Response) => {
     // Ghi tệp nén vào response và gửi về phía người dùng
     res.attachment("images.zip");
     archive.pipe(res);
-  } catch (err) {
-    // console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+  } catch (err: any) {
+    // console.log("Error: ", err);
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -140,8 +143,8 @@ const editProduct = async (req: Request, res: Response): Promise<Response> => {
     if (fileOlds && fileOlds.length > 0) {
       const imagesFolderPath = path.join(__dirname, "../uploads");
       fileOlds.forEach((files) => {
-        if (files.dataValues.image !== "add-product.jpg") {
-          fs.unlink(`${imagesFolderPath}/${files.dataValues.image}`, (err) => {
+        if (files.image !== "add-product.jpg") {
+          fs.unlink(`${imagesFolderPath}/${files.image}`, (err) => {
             if (err) {
               console.error(err);
             }

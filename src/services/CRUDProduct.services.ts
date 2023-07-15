@@ -1,5 +1,4 @@
-import ImageProduct from "../db/models/ImageProduct";
-import Product from "../db/models/Product";
+import { Product, ImageProduct } from "../db/models";
 import { Op } from "sequelize";
 
 const getProducts = async (

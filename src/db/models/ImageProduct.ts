@@ -3,9 +3,8 @@ import connection from "../../config/connectDB";
 
 class ImageProduct extends Model {
   public id!: number;
-  public purchaseDate!: Date;
-  public totalMoney!: number;
-  public userId!: number;
+  public productId!: number;
+  public image!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -31,7 +30,7 @@ ImageProduct.init(
     timestamps: true,
     sequelize: connection.sequelize,
     underscored: false,
-    tableName: "imageproducts",
+    // tableName: "imageproducts",
   }
 );
 

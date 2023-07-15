@@ -1,4 +1,4 @@
-import Product_Bill from "../db/models/Product_Bill";
+import { Product_Bill } from "../db/models";
 import { Op } from "sequelize";
 
 const getProductBillById = async (

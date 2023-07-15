@@ -30,7 +30,7 @@ ProductType.init(
     timestamps: true,
     sequelize: connection.sequelize,
     underscored: false,
-    tableName: "producttypes",
+    // tableName: "producttypes",
   }
 );
 
