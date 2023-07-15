@@ -1,5 +1,7 @@
 "use strict";
 
+const { faker } = require("@faker-js/faker");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -12,7 +14,7 @@ module.exports = {
           password:
             "$2a$12$jRX0GBYAr/XPUAiZYZjnruZ4TT65438891S3g0djTjOEo3wgErdn.", // "admin"
           address: "Thai Binh",
-          phone: "0345",
+          phone: faker.phone.number("0##########"),
           avatar: "avatar-default.jpg",
           roleId: 1,
           createdAt: new Date(),
@@ -24,7 +26,7 @@ module.exports = {
           password:
             "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
           address: "Ha Noi",
-          phone: "034567",
+          phone: faker.phone.number("0##########"),
           avatar: "avatar-default.jpg",
           roleId: 2,
           createdAt: new Date(),
@@ -36,7 +38,7 @@ module.exports = {
           password:
             "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
           address: "Nam Dinh",
-          phone: "034567",
+          phone: faker.phone.number("0##########"),
           avatar: "avatar-default.jpg",
           roleId: 2,
           createdAt: new Date(),
@@ -48,7 +50,7 @@ module.exports = {
           password:
             "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
           address: "Thanh Hoa",
-          phone: "034567",
+          phone: faker.phone.number("0##########"),
           avatar: "avatar-default.jpg",
           roleId: 2,
           createdAt: new Date(),
@@ -60,7 +62,7 @@ module.exports = {
           password:
             "$2a$12$wxnc0mT9whF38RhVYOJOc.atdUf7xB5aWh0ngoNt0P0bmQAkRUq0i", // "user1"
           address: "Hai Phong",
-          phone: "034567",
+          phone: faker.phone.number("0##########"),
           avatar: "avatar-default.jpg",
           roleId: 2,
           createdAt: new Date(),

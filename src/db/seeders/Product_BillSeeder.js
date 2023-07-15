@@ -1,6 +1,6 @@
 "use strict";
 
-const faker = require("faker");
+const { faker } = require("@faker-js/faker");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,9 +8,9 @@ module.exports = {
 
     for (let i = 0; i < 100; i++) {
       productBills.push({
-        billId: faker.random.number({ min: 1, max: 30 }),
-        productId: faker.random.number({ min: 1, max: 18 }),
-        quantity: faker.random.number({ min: 1, max: 5 }),
+        billId: faker.number.int({ min: 1, max: 30 }),
+        productId: faker.number.int({ min: 1, max: 18 }),
+        quantity: faker.number.int({ min: 1, max: 5 }),
         createdAt: new Date(),
         updatedAt: new Date(),
       });

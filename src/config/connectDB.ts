@@ -1,15 +1,17 @@
 import dotenv from "dotenv";
-import { Sequelize } from "sequelize";
+import { Sequelize, Dialect } from "sequelize";
 dotenv.config();
 
-const dbName = process.env.DB_USER as string;
+const dbUsername = process.env.DB_USERNAME as string;
 const dbPassword = process.env.DB_PASSWORD;
-const dbUserName = process.env.DB_NAME as string;
+const dbDatabaseName = process.env.DB_DATABASE_NAME as string;
 const dbHost = process.env.DB_HOST;
-const dbDialect = "mysql";
+const dbDialect = process.env.DB_DIALECT as Dialect;
+const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : undefined;
 
-const sequelize = new Sequelize(dbUserName, dbName, dbPassword, {
+const sequelize = new Sequelize(dbDatabaseName, dbUsername, dbPassword, {
   host: dbHost,
+  port: dbPort,
   dialect: dbDialect,
   pool: {
     max: 5,
@@ -18,6 +20,18 @@ const sequelize = new Sequelize(dbUserName, dbName, dbPassword, {
     idle: 10000,
   },
   logging: false,
+  dialectOptions:
+    process.env.DB_SSL === "true"
+      ? {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+        }
+      : {},
+  query: {
+    raw: true,
+  },
 });
 
 const connectDB = async () => {
