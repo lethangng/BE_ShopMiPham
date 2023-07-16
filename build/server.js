@@ -40,6 +40,6 @@ app.use((req, res) => {
     res.status(404).json({ message: "Tuyến đường không tồn tại" });
 });
 app.listen(port, host, () => {
-    console.log(`Example app ${host} listening on port ${port}`);
+    console.log(`App ${host} listening on port ${port}`);
 });
 //# sourceMappingURL=server.js.map
