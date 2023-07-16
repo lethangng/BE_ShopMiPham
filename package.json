@@ -2,7 +2,7 @@
   "name": "shop_mi_pham_backend_ts",
   "version": "1.0.0",
   "description": "shopMiPham, backend, ts",
-  "main": "server.ts",
+  "main": "build/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/server.ts",
